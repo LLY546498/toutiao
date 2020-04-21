@@ -9,7 +9,8 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login,
-  }];
+  },
+];
 
 const router = new VueRouter({
   routes,
