@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-    <h1>黑马头条</h1>
-    <router-view/>
+  <router-view/>
     <el-button>默认按钮</el-button>
   </div>
 </template>
