@@ -4,8 +4,8 @@ import axios from 'axios';
 
 // 创建axios实例
 
-const req1 = axios.create({
+const request = axios.create({
   baseURL: 'http://ttapi.research.itcast.cn/', // 请求的基础路径
 });
 
-export default req1;
+export default request;

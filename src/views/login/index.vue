@@ -3,17 +3,30 @@
   <div class="login-container">
     <!-- <h1>lalala</h1> -->
     <div class="login-head"></div>
-    <el-form class="login-from" ref="form" :model="user">
-      <el-form-item>
+    <!-- 配置表单验证
+          1，给from绑定model 为表单数据对象
+          2，给需要验证的表单 el-from-item绑定 prop属性
+            注意：Prop属性 需要指定表单对象的数据名称
+            3，给el-from组件的rules 属性配置表单验证规则
+          手动触发表单验证
+          1.el-from设置ref 起个名字
+          2.通过ref获取el-from组件 调用组件的validate方法
+     -->
+    <el-form
+     class="login-form"
+      ref="login-form"
+      :model="user"
+      :rules="fromRules">
+      <el-form-item prop="mobile">
         <el-input v-model="user.mobile" placeholder="请输入手机号">
         </el-input>
       </el-form-item>
-      <el-form-item>
+      <el-form-item prop="code">
         <el-input v-model="user.code" placeholder="请输入验证码">
         </el-input>
       </el-form-item>
-      <el-form-item>
-          <el-checkbox v-model="checked">我已阅读并同意用户协议和隐私条款</el-checkbox>
+      <el-form-item prop="agree">
+          <el-checkbox v-model="user.agree">我已阅读并同意用户协议和隐私条款</el-checkbox>
       </el-form-item>
       <el-form-item>
         <el-button class="login-btn" type="primary" :loading="loginLoding" @click="onLogin">登录
@@ -25,7 +38,7 @@
 </template>
 
 <script>
-import request from '@/utils/request';
+import login from '@/api/user';
 
 export default {
   name: 'LoginIndex',
@@ -36,9 +49,35 @@ export default {
       user: {
         mobile: '',
         code: '',
+        agree: false,
       },
-      checked: false,
+      // checked: false,
       loginLoding: false,
+      fromRules: {
+        // 要验证的数据名称：规则列表
+        mobile: [
+          { required: true, message: '手机号不能为空', trigger: 'change' },
+          { pattern: /^1[3|5|7|8|9]\d{9}$/, message: '请输入正确的号码格式', trigger: 'blur' },
+        ],
+        code: [
+          { required: true, message: '验证码不能为空', trigger: 'blur' },
+          { pattern: /^\d{6}$/, message: '请输入正确的验证码', trigger: 'blur' },
+        ],
+        agree: [
+          // 如果验证通过callback
+          // 验证失败 callback（new Error('错误消息')）
+          {
+            validator: (rule, value, callback) => {
+              if (value) {
+                callback();
+              } else {
+                callback(new Error('请同意用户协议'));
+              }
+            },
+            trigger: 'blur',
+          },
+        ],
+      },
     };
   },
   computed: {},
@@ -48,16 +87,29 @@ export default {
   methods: {
     onLogin() {
       // 获取表单数据
-      const { user } = this.user;
+      // console.log(this.user);
+      // const abc = this.user;
+      // console.log(user);
       // 表单验证
-      // 验证通过提交登录
+      this.$refs['login-form'].validate((valid) => {
+        // 如果表单验证失败，停止请求提交
+        if (!valid) {
+          return;
+        }
+        // 验证通过请求登录
+        this.login();
+      });
+      // 处理后端响应结果
+      // 成功:xxx
+      // 失败:xxx
+    },
+    login() {
       // 打开loding
       this.loginLoding = true;
-      request({
-        method: 'POST',
-        url: '/mp/v1_0/authorizations',
-        data: user,
-      }).then((res) => {
+      // 接口请求可能需要重用
+      // 实际工作中 接口容易变动，
+      // 建议把所有的请求都封装成函数,管理维护方便,方便重用
+      login(this.user).then((res) => {
         console.log(res);
         this.$message({
           message: '登录成功',
@@ -71,11 +123,9 @@ export default {
         // 关闭loding
         this.loginLoding = false;
       });
-      // 处理后端响应结果
-      // 成功:xxx
-      // 失败:xxx
     },
   },
+
 };
 </script>
 
@@ -98,7 +148,7 @@ export default {
     background: url("./logo_index.png") no-repeat;
     margin-bottom: 30px;
   }
-  .login-from {
+  .login-form {
     background-color: #fff;
     padding: 50px;
     min-width: 300px;
