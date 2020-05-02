@@ -7,15 +7,15 @@ export default {
   name: 'HomeIndex',
   components: {},
   props: {},
-  data() {
-    return {};
+  data () {
+    return {}
   },
   computed: {},
   watch: {},
-  created() {},
-  mounted() {},
-  methods: {},
-};
+  created () {},
+  mounted () {},
+  methods: {}
+}
 </script>
 
 <style scoped lang="less"></style>

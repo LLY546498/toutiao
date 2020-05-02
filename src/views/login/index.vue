@@ -38,18 +38,18 @@
 </template>
 
 <script>
-import login from '@/api/user';
+import { login } from '@/api/user.js'
 
 export default {
   name: 'LoginIndex',
   components: {},
   props: {},
-  data() {
+  data () {
     return {
       user: {
-        mobile: '',
-        code: '',
-        agree: false,
+        mobile: '13911111111',
+        code: '246810',
+        agree: false
       },
       // checked: false,
       loginLoding: false,
@@ -57,11 +57,11 @@ export default {
         // 要验证的数据名称：规则列表
         mobile: [
           { required: true, message: '手机号不能为空', trigger: 'change' },
-          { pattern: /^1[3|5|7|8|9]\d{9}$/, message: '请输入正确的号码格式', trigger: 'blur' },
+          { pattern: /^1[3|5|7|8|9]\d{9}$/, message: '请输入正确的号码格式', trigger: 'blur' }
         ],
         code: [
           { required: true, message: '验证码不能为空', trigger: 'blur' },
-          { pattern: /^\d{6}$/, message: '请输入正确的验证码', trigger: 'blur' },
+          { pattern: /^\d{6}$/, message: '请输入正确的验证码', trigger: 'blur' }
         ],
         agree: [
           // 如果验证通过callback
@@ -69,23 +69,23 @@ export default {
           {
             validator: (rule, value, callback) => {
               if (value) {
-                callback();
+                callback()
               } else {
-                callback(new Error('请同意用户协议'));
+                callback(new Error('请同意用户协议'))
               }
             },
-            trigger: 'blur',
-          },
-        ],
-      },
-    };
+            trigger: 'blur'
+          }
+        ]
+      }
+    }
   },
   computed: {},
   watch: {},
-  created() {},
-  mounted() {},
+  created () {},
+  mounted () {},
   methods: {
-    onLogin() {
+    onLogin () {
       // 获取表单数据
       // console.log(this.user);
       // const abc = this.user;
@@ -94,39 +94,40 @@ export default {
       this.$refs['login-form'].validate((valid) => {
         // 如果表单验证失败，停止请求提交
         if (!valid) {
-          return;
+          return
         }
         // 验证通过请求登录
-        this.login();
-      });
+        this.login()
+      })
       // 处理后端响应结果
       // 成功:xxx
       // 失败:xxx
     },
-    login() {
+    login () {
       // 打开loding
-      this.loginLoding = true;
+      this.loginLoding = true
       // 接口请求可能需要重用
       // 实际工作中 接口容易变动，
       // 建议把所有的请求都封装成函数,管理维护方便,方便重用
       login(this.user).then((res) => {
-        console.log(res);
+        // console.log(res)
         this.$message({
           message: '登录成功',
-          type: 'success',
-        });
+          type: 'success'
+        })
         // 关闭loding
-        this.loginLoding = false;
+        this.loginLoding = false
+        this.$router.push('/')
       }).catch((err) => {
-        console.log('登录失败', err);
-        this.$message.error('登陆失败,手机号或验证码错误');
+        console.log('登录失败', err)
+        this.$message.error('登陆失败,手机号或验证码错误')
         // 关闭loding
-        this.loginLoding = false;
-      });
-    },
-  },
+        this.loginLoding = false
+      })
+    }
+  }
 
-};
+}
 </script>
 
 <style scoped lang="less">
@@ -156,7 +157,6 @@ export default {
       width: 100%;
     }
   }
-
 
 }
 
