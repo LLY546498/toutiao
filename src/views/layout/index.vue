@@ -38,7 +38,7 @@
             </el-dropdown-menu>
           </el-dropdown>
           </el-header>
-        <el-main class="main">Main
+        <el-main class="main">
         <!-- 子路由出口 -->
             <router-view/>
             </el-main>
