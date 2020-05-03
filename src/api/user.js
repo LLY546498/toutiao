@@ -15,12 +15,13 @@ export const login = data => {
 
 // 获取用户信息
 export const getUserProfile = () => {
+  // const user = JSON.parse(window.localStorage.getItem('user'))
   return request({
     method: 'GET',
-    url: '/mp/v1_0/user/profile',
-    headers: {
-      Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTk4NjkzODIsInVzZXJfaWQiOjEsInJlZnJlc2giOmZhbHNlLCJ2ZXJpZmllZCI6dHJ1ZX0.wd_Tue58TYToBSN3HCgvXDmy0AYMArcYKUtynrkL1Hs'
-    }
+    url: '/mp/v1_0/user/profile'
+    // headers: {
+    //   Authorization: `Bearer ${user.token}`
+    // }
   })
 }
 // // 修改用户信息
