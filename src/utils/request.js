@@ -12,6 +12,7 @@ export default request
 
 // 请求拦截器
 request.interceptors.request.use(
+  // 所有请求会经过这里
   function (config) {
     const user = JSON.parse(window.localStorage.getItem('user'))
     // 如果有登录用户信息， 则统一设置 token

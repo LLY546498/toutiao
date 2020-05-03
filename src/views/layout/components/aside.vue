@@ -7,11 +7,13 @@
     text-color="#fff"
     active-text-color="#ffd04b"
     router
+    :collapse="isCollapse"
 >
     <div class="nav-header">
         <img class="header-logo" src="./logo_admin.png" alt="">
     </div>
-    <el-menu-item index="/">
+    <el-menu-item
+     index="/">
         <i class="el-icon-s-home"></i>
         <span slot="title">首页</span>
     </el-menu-item>
@@ -47,9 +49,11 @@
 export default {
   name: 'AppAside',
   components: {},
-  props: {},
+  props: ['is-collapse'],
   data () {
-    return {}
+    return {
+    //   isCollapse: true
+    }
   },
   computed: {},
   watch: {},
